@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
+using WebApplicationFactoryExample.Model;
 using WebApplicationFactoryExample.Services;
 
 namespace WebApplicationFactoryExample.Controllers
@@ -9,19 +10,25 @@ namespace WebApplicationFactoryExample.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly IWeatherForecastService _weatherForecastService;
-        private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(IWeatherForecastService weatherForecastService,
-            ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IWeatherForecastService weatherForecastService)
         {
             _weatherForecastService = weatherForecastService;
-            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var weatherForecast = _weatherForecastService.Get();
+            WeatherForecast weatherForecast;
+            try
+            {
+                weatherForecast = _weatherForecastService.Get();
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
             return Ok(weatherForecast);
         }
     }
