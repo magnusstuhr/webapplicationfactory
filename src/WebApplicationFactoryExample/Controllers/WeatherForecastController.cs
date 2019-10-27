@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApplicationFactoryExample.Model;
 using WebApplicationFactoryExample.Services;
 
 namespace WebApplicationFactoryExample.Controllers
@@ -22,9 +19,10 @@ namespace WebApplicationFactoryExample.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IActionResult Get()
         {
-            throw new NotImplementedException();
+            var weatherForecast = _weatherForecastService.Get();
+            return Ok(weatherForecast);
         }
     }
 }
